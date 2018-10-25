@@ -16,6 +16,7 @@
 package example
 
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Value
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -27,6 +28,9 @@ import spock.lang.Specification
  */
 class HelloControllerSpec extends Specification {
 
+    @Value('${greeting:FallbackInSpec}')
+    String greeting = 'InitialInSpec'
+
     @Shared @AutoCleanup EmbeddedServer embeddedServer =
             ApplicationContext.run(EmbeddedServer)
 
@@ -35,6 +39,6 @@ class HelloControllerSpec extends Specification {
         HelloClient client = embeddedServer.applicationContext.getBean(HelloClient)
 
         expect:
-        client.hello("Fred") == "Hello Fred!"
+        client.hello("Fred") == "${greeting} Fred!"
     }
 }

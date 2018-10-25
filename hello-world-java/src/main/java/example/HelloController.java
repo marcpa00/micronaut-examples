@@ -15,6 +15,7 @@
  */
 package example;
 
+import io.micronaut.context.annotation.Value;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.validation.Validated;
@@ -30,8 +31,11 @@ import javax.validation.constraints.NotBlank;
 @Validated
 public class HelloController {
 
+    @Value("${greeting:Fallback}")
+    String hello = "Initial";
+
     @Get("/hello/{name}")
     public Single<String> hello(@NotBlank String name) {
-        return Single.just("Hello " + name + "!");
+        return Single.just(hello + " " + name + "!");
     }
 }

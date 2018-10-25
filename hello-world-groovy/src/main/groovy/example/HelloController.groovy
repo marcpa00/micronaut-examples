@@ -15,6 +15,7 @@
  */
 package example
 
+import io.micronaut.context.annotation.Value
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 
@@ -25,8 +26,11 @@ import io.micronaut.http.annotation.Get
 @Controller("/")
 class HelloController {
 
+    @Value('${greeting:Fallback}')
+    String greeting = "Initial"
+
     @Get("/hello/{name}")
     String hello(String name) {
-        return "Hello $name!"
+        return "$greeting $name!"
     }
 }
